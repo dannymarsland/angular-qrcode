@@ -21,7 +21,7 @@ angular.module('monospaced.qrcode', [])
           'H': 'High'
         },
         draw = function(context, qr, modules, tile, color, size) {
-          var padd = Math.floor((size - (modules * tile)/2);
+          var padd = Math.floor((size - (modules * tile)/2));
           for (var row = 0; row < modules; row++) {
             for (var col = 0; col < modules; col++) {
               var w = tile,
