@@ -20,15 +20,16 @@ angular.module('monospaced.qrcode', [])
           'Q': 'Quartile',
           'H': 'High'
         },
-        draw = function(context, qr, modules, tile, color) {
+        draw = function(context, qr, modules, tile, color, size) {
+          var padd = Math.floor((size - (modules * tile)/2);
           for (var row = 0; row < modules; row++) {
             for (var col = 0; col < modules; col++) {
-              var w = (Math.ceil((col + 1) * tile) - Math.floor(col * tile)),
-                  h = (Math.ceil((row + 1) * tile) - Math.floor(row * tile));
+              var w = tile,
+                  h = tile;
 
               context.fillStyle = qr.isDark(row, col) ? color.foreground : color.background;
-              context.fillRect(Math.round(col * tile),
-                               Math.round(row * tile), w, h);
+              context.fillRect(padd + Math.round(col * tile),
+                               padd + Math.round(row * tile), w, h);
             }
           }
         };
@@ -98,7 +99,7 @@ angular.module('monospaced.qrcode', [])
             },
             setSize = function(value) {
               size = parseInt(value, 10) || modules * 2;
-              tile = size / modules;
+              tile = Math.floor(size / modules);
               canvas.width = canvas.height = size;
             },
             render = function() {
@@ -127,7 +128,7 @@ angular.module('monospaced.qrcode', [])
               }
 
               if (canvas2D) {
-                draw(context, qr, modules, tile, color);
+                draw(context, qr, modules, tile, color, size);
 
                 if (download) {
                   domElement.href = canvas.toDataURL('image/png');
