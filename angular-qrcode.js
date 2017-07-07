@@ -21,15 +21,15 @@ angular.module('monospaced.qrcode', [])
           'H': 'High'
         },
         draw = function(context, qr, modules, tile, color, size) {
-          var padd = Math.floor((size - (modules * tile)/2));
+          var padding = Math.floor((size - (modules * tile))/2);
           for (var row = 0; row < modules; row++) {
             for (var col = 0; col < modules; col++) {
               var w = tile,
                   h = tile;
 
               context.fillStyle = qr.isDark(row, col) ? color.foreground : color.background;
-              context.fillRect(padd + Math.round(col * tile),
-                               padd + Math.round(row * tile), w, h);
+              context.fillRect(padding + Math.round(col * tile),
+                               padding + Math.round(row * tile), w, h);
             }
           }
         };
