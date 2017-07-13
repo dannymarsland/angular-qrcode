@@ -51,7 +51,6 @@ angular.module('monospaced.qrcode', [])
             errorCorrectionLevel,
             data,
             size,
-            deviceRenderSize,
             modules,
             tile,
             qr,
@@ -79,7 +78,7 @@ angular.module('monospaced.qrcode', [])
 
               data = value.replace(trim, '');
               qr = qrcode(version, errorCorrectionLevel);
-              qr.addData(data, 'Alphanumeric');
+              qr.addData(data);
 
               try {
                 qr.make();
@@ -99,13 +98,9 @@ angular.module('monospaced.qrcode', [])
               modules = qr.getModuleCount();
             },
             setSize = function(value) {
-              const dpr = window.devicePixelRatio;
               size = parseInt(value, 10) || modules * 2;
-              deviceRenderSize = Math.floor(size * dpr);
-              tile = Math.floor(deviceRenderSize / modules);
-              canvas.width = canvas.height = deviceRenderSize;
-              canvas.style.width = size + 'px';
-              canvas.style.height = size + 'px';
+              tile = Math.floor(size / modules);
+              canvas.width = canvas.height = size;
             },
             render = function() {
               if (!qr) {
@@ -133,7 +128,7 @@ angular.module('monospaced.qrcode', [])
               }
 
               if (canvas2D) {
-                draw(context, qr, modules, tile, color, deviceRenderSize);
+                draw(context, qr, modules, tile, color, size);
 
                 if (download) {
                   domElement.href = canvas.toDataURL('image/png');
