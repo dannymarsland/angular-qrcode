@@ -98,9 +98,11 @@ angular.module('monospaced.qrcode', [])
               modules = qr.getModuleCount();
             },
             setSize = function(value) {
-              size = parseInt(value, 10) || modules * 2;
+              var visualSize = parseInt(value, 10) || modules * 2;
+              size = Math.round(visualSize * (window.devicePixelRatio || 1));
               tile = Math.floor(size / modules);
               canvas.width = canvas.height = size;
+              canvas.style.width = canvas.style.height = visualSize + 'px';
             },
             render = function() {
               if (!qr) {
